@@ -1,29 +1,40 @@
 const React = {
   handlerState: {
     state: [],
-    count: 0,
+    currentStateKey: 0,
+  },
+  handlerEffect: {
+    currentEffectKey: 0,
   },
   render: function () {
+    console.log(this.handlerState);
+
     const app = document.getElementById("root");
     app.innerHTML = App();
-    this.handlerState.count = 0;
+    this.handlerState.currentStateKey = 0;
+  },
+  useEffect: function (func, depandencies) {
+    if (this.handlerEffect.currentEffectKey === 0) {
+      this.handlerEffect.currentEffectKey += 1;
+      func();
+    }
   },
   useState: function (initState) {
     const state = this.handlerState.state;
-    const count = this.handlerState.count;
+    const currentStateKey = this.handlerState.currentStateKey;
 
-    if (state.length === count) {
+    if (state.length === currentStateKey) {
       this.handlerState.state.push(initState);
     }
 
     const setState = (newState) => {
-      this.handlerState.state[count] = newState;
+      this.handlerState.state[currentStateKey] = newState;
       this.render();
     };
 
-    this.handlerState.count += 1;
+    this.handlerState.currentStateKey += 1;
 
-    return [state[count], setState];
+    return [state[currentStateKey], setState];
   },
 };
 
